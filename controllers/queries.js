@@ -77,4 +77,18 @@ module.exports.all = async function (req, res) {
     return res.status(200).json(users);
 }
 
+module.exports.safeCreate = async function (req, res) {
+    const t = await sequelize.transaction();
+    try {
+        const { userData, userDetails } = req.body;
+        let user = await User.create(userData, { transaction: t });
+        await details.create({ ...userDetails, user_id: user.id }, { transaction: t });
+        await t.commit();
+        return res.status(200).json(user);
+    } catch (error) {
+        await t.rollback();
+        return res.status(500).json(error);
+    }
+
+}
 

@@ -9,9 +9,11 @@ const {
     firstTwo,
     orderByAge,
     getUser,
-    all } = require('../controllers/queries');
+    all,
+    safeCreate } = require('../controllers/queries');
 
 router.post('/createUser', create);
+router.post('/createUserSafe', safeCreate);
 router.post('/createUserWithAttributes', createWithAttributes);
 router.get('/showFirstName', showFirst);
 router.get('/showCount', showCount);
