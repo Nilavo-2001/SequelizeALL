@@ -1,10 +1,11 @@
 const { defaults } = require('pg');
-const { User, sequelize, Sequelize } = require('../models');
+const { User, sequelize, Sequelize, details } = require('../models');
 
 
 module.exports.create = async function (req, res) {
-    let data = req.body;
-    let user = await User.create(data);
+    const { userData, userDetails } = req.body;
+    let user = await User.create(userData);
+    await details.create({ ...userDetails, user_id: user.id });
     return res.status(200).json(user);
 }
 
@@ -63,8 +64,17 @@ module.exports.getUser = async function (req, res) {
         where: { firstName: firstName },
         defaults: {
             age: 10
-        }
+        },
     });
 
     return res.status(200).json(user);
 }
+
+module.exports.all = async function (req, res) {
+    let users = await User.findAll({
+        include: details
+    });
+    return res.status(200).json(users);
+}
+
+

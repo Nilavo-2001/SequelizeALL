@@ -8,7 +8,8 @@ const {
     excludeLastName,
     firstTwo,
     orderByAge,
-    getUser } = require('../controllers/queries');
+    getUser,
+    all } = require('../controllers/queries');
 
 router.post('/createUser', create);
 router.post('/createUserWithAttributes', createWithAttributes);
@@ -18,4 +19,5 @@ router.get('/excludeLastName', excludeLastName);
 router.get('/firstTwo', firstTwo);
 router.get('/order', orderByAge);
 router.get('/getUser', getUser);
+router.get('/all', all);
 module.exports = router;

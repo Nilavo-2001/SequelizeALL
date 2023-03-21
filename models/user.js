@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
-      // define association here
+    static associate({ details }) {
+      this.hasOne(details, { foreignKey: "user_id" });
     }
   }
   User.init({
@@ -23,8 +23,17 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: "Singh"
     },
     age: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       allowNull: false
+    },
+    fullName: {
+      type: DataTypes.VIRTUAL,
+      get() {
+        return `${this.firstName} ${this.lastName}`;
+      },
+      set(value) {
+        throw new Error('Do not try to set the `fullName` value!');
+      }
     }
   }, {
     sequelize,
